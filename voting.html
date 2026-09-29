@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Voting Portal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #2a5298;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(42, 82, 152, 0.3);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff512f, #dd2476);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(221, 36, 118, 0.6);
+        }
+
+        #result {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            min-height: 24px;
+        }
+
+        #partySection {
+            display: none;
+            margin-top: 25px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .cards-wrapper {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .party-card {
+            background: #ffffff;
+            border: 2px solid #eef2f5;
+            padding: 15px;
+            border-radius: 15px;
+            width: 48%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .party-card:hover {
+            transform: translateY(-6px);
+            border-color: #2a5298;
+            box-shadow: 0 10px 25px rgba(42, 82, 152, 0.25);
+        }
+
+        .party-card img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .party-card h4 {
+            margin: 8px 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .btn-vote {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-vote:hover {
+            box-shadow: 0 4px 12px rgba(56, 239, 125, 0.4);
+        }
+
+        #winnerSection {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, #f3f9a7 100%);
+            border: 2px solid #f2c94c;
+            box-shadow: 0 10px 30px rgba(242, 201, 76, 0.3);
+            animation: bounceIn 0.6s ease;
+        }
+
+        #winnerSection h2 {
+            color: #d35400;
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+        }
+
+        #winnerSection img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin: 10px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>VOTE VALIDATION</h1>
+        
+        <form id="voteForm">
+            <div class="input-group">
+                <input type="text" id="name" placeholder="Enter Full Name" required>
+            </div>
+            <div class="input-group">
+                <input type="number" id="age" placeholder="Enter Age" required>
+            </div>
+            <div class="input-group">
+                <input type="text" id="cont" placeholder="Enter Country" required>
+            </div>
+            <input type="button" class="btn-submit" value="Check Eligibility" onclick="vote()">
+        </form>
+        
+        <p id="result"></p>
+
+        <!-- Hidden party options section -->
+        <div id="partySection">
+            <h3>Select Candidate to Cast Vote</h3>
+            <div class="cards-wrapper">
+                <div class="party-card" onclick="castVote('Modi G', 'https://th.bing.com/th/id/OIF.obMoJSgVVTQuNYCH1MGzwQ?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3')">
+                    <img src="https://th.bing.com/th/id/OIF.obMoJSgVVTQuNYCH1MGzwQ?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Modi G">
+                    <h4>Modi G</h4>
+                    <button class="btn-vote">Vote</button>
+                </div>
+
+                <div class="party-card" onclick="castVote('Rahul', 'https://tse4.mm.bing.net/th/id/OIP.9iHTFkpFjUtv6HprebtXIgHaGV?r=0&w=3822&h=3273&rs=1&pid=ImgDetMain&o=7&rm=3')">
+                    <img src="https://tse4.mm.bing.net/th/id/OIP.9iHTFkpFjUtv6HprebtXIgHaGV?r=0&w=3822&h=3273&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Rahul">
+                    <h4>Rahul</h4>
+                    <button class="btn-vote">Vote</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden winner announcement section -->
+        <div id="winnerSection">
+            <h2 id="winnerText"></h2>
+            <img id="winnerLogo" src="" alt="Winner Logo">
+        </div>
+    </div>
+
+    <script src="vote.js"></script>
+</body>
+</html>
