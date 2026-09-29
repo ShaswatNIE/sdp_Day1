@@ -1,0 +1,62 @@
+body {
+    background-color: darksalmon;
+}
+
+img {
+    height: 300px;
+    width: 200px;
+}
+
+#tony {
+    border: 10px solid black;
+    border-radius: 50%; 
+    height: 200px;      
+    width: 200px;
+    object-fit: cover;  
+}
+
+#div1, #div2, #div3 {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    padding: 10px;      
+    margin: 10px;
+    background-color: blue;
+    border: 1px solid black;
+    transition: background-color 0.3s, box-shadow 0.3s
+}
+
+
+#div1:hover {
+    background-color: red;
+    box-shadow: 0 0 25px red;
+}
+
+#div2:hover {
+    background-color: green;
+    box-shadow: 0 0 25px green;
+}
+
+#div3:hover {
+    background-color: yellow;
+    box-shadow: 0 0 25px yellow;
+}
+form {
+    width: 300px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: rgba(1, 255,255, 0.5);
+    backdrop-filter: blur(10px);
+}
+input{
+    width: 80%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    background-color: blanchedalmond;
+    transition: 0.5s ease;
+}
